@@ -1,0 +1,85 @@
+ program to implement Transposition Cipher and Rail Fence Technique
+
+// 1. Transposition Cipher (Program 1)
+import java.util.Scanner;
+public class TranspositionCipher {
+ public static String encrypt(String plaintext, int key) {
+ int length = plaintext.length();
+ int rows = key;
+ int cols = (int) Math.ceil((double) length / key);
+ char[][] grid = new char[rows][cols];
+ int index = 0;
+ for (int i = 0; i < rows; i++) {
+ for (int j = 0; j < cols; j++) {
+ if (index < length) {
+ grid[i][j] = plaintext.charAt(index++);
+ } else {
+ grid[i][j] = 'X'; // Fill with 'X' for empty spaces
+ }
+ }
+ }
+ StringBuilder ciphertext = new StringBuilder();
+ for (int j = 0; j < cols; j++) {
+ for (int i = 0; i < rows; i++) {
+ if (grid[i][j] != 'X') {
+ ciphertext.append(grid[i][j]);
+ }
+ }
+ }
+ return ciphertext.toString();
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter plaintext: ");
+ String plaintext = scanner.nextLine();
+ System.out.print("Enter key (number of rows): ");
+ int key = scanner.nextInt();
+ String ciphertext = encrypt(plaintext, key);
+ System.out.println("Encrypted (Transposition Cipher): " + ciphertext);
+ }
+}
+
+/* output:-
+Enter plaintext: hello world
+Enter key (number of rows): 3
+Encrypted (Transposition Cipher): hore llwdlo*/
+
+
+// 2. Rail Fence Cipher (Program 2)
+import java.util.Scanner;
+public class RailFenceCipher {
+ public static String encrypt(String plaintext, int rails) {
+ char[][] railFence = new char[rails][plaintext.length()];
+ boolean directionDown = false;
+ int row = 0, col = 0;
+ for (int i = 0; i < plaintext.length(); i++) {
+ railFence[row][col++] = plaintext.charAt(i);
+ if (row == 0 || row == rails - 1) {
+ directionDown = !directionDown;
+ }
+ row = directionDown ? row + 1 : row - 1;
+ }
+ StringBuilder ciphertext = new StringBuilder();
+ for (int i = 0; i < rails; i++) {
+ for (int j = 0; j < plaintext.length(); j++) {
+ if (railFence[i][j] != 0) {
+ ciphertext.append(railFence[i][j]);
+ }
+ }
+ }
+ return ciphertext.toString();
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter plaintext: ");
+ String plaintext = scanner.nextLine();
+ System.out.print("Enter number of rails: ");
+ int rails = scanner.nextInt();
+ String ciphertext = encrypt(plaintext, rails);
+ System.out.println("Encrypted (Rail Fence Cipher): " + ciphertext);
+ }
+}
+/* output:- 
+Enter plaintext: hello world
+Enter number of rails: 5
+Encrypted (Rail Fence Cipher): hreollwdl o */
