@@ -1,4 +1,4 @@
- program to implement Transposition Cipher and Rail Fence Technique
+// program to implement Transposition Cipher and Rail Fence Technique
 
 // 1. Transposition Cipher (Program 1)
 import java.util.Scanner;
