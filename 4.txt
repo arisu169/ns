@@ -1,0 +1,38 @@
+ program to implement Poly-Alphabetic Cipher
+
+ import java.util.Scanner;
+public class PolyAlphabeticCipher {
+ public static String encrypt(String plaintext, String key) {
+ StringBuilder ciphertext = new StringBuilder();
+ int keyIndex = 0;
+ for (int i = 0; i < plaintext.length(); i++) {
+ char ptChar = plaintext.charAt(i);
+ if (Character.isLetter(ptChar)) {
+ char keyChar = key.charAt(keyIndex % key.length());
+ if (Character.isLowerCase(ptChar)) {
+ ptChar = (char) (((ptChar - 'a' + (keyChar - 'a')) % 26) + 'a');
+ } else if (Character.isUpperCase(ptChar)) {
+ ptChar = (char) (((ptChar - 'A' + (keyChar - 'A')) % 26) + 'A');
+ }
+ ciphertext.append(ptChar);
+ keyIndex++;
+ } else {
+ ciphertext.append(ptChar);
+ }
+ }
+ return ciphertext.toString();
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter plaintext: ");
+ String plaintext = scanner.nextLine();
+ System.out.print("Enter key: ");
+ String key = scanner.nextLine();
+ String ciphertext = encrypt(plaintext, key);
+ System.out.println("Encrypted ciphertext: " + ciphertext);
+ }
+}
+/* output:-
+Enter plaintext: hello world
+Enter key: 5
+Encrypted ciphertext: VSZZ] K]`ZR */
