@@ -29,8 +29,8 @@ public class CaesarCipher {
  }
 }
 
-// output:-
+/* output:-
 Enter text to encrypt:
 hello world
 Encrypted: khoor zruog
-Decrypted: hello world
+Decrypted: hello world */
