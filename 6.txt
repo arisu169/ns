@@ -21,6 +21,4 @@ public class SingleDES_Encrypt {
 
 
 /* output:- 
-Enter plaintext: hello world
-Enter number of rails: 5
-Encrypted (Rail Fence Cipher): hreollwdl o */
+Encrypted text: 01Jk6AecyqldguNoHIO7dw== */
