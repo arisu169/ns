@@ -1,0 +1,36 @@
+// Caesar Cipher Algorithm
+
+import java.util.Scanner;
+public class CaesarCipher {
+ public static String encrypt(String text, int shift) {
+ StringBuilder result = new StringBuilder();
+ for (char ch : text.toCharArray()) {
+ if (Character.isLetter(ch)) {
+ char base = Character.isUpperCase(ch) ? 'A' : 'a';
+ result.append((char) ((ch - base + shift) % 26 + base));
+ } else {
+ result.append(ch);
+ }
+ }
+ return result.toString();
+ }
+
+ public static String decrypt(String text, int shift) {
+ return encrypt(text, 26 - shift);
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.println("Enter text to encrypt:");
+ String text = scanner.nextLine();
+ int shift = 3; // Fixed shift
+ String encrypted = encrypt(text, shift);
+ System.out.println("Encrypted: " + encrypted);
+ System.out.println("Decrypted: " + decrypt(encrypted, shift));
+ }
+}
+
+// output:-
+Enter text to encrypt:
+hello world
+Encrypted: khoor zruog
+Decrypted: hello world
