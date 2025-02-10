@@ -1,0 +1,41 @@
+// program to implement hash functions (MD5 and SHA-l) for Password Hashing
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+public class PasswordHashing {
+ public static String hashPasswordMD5(String password) throws NoSuchAlgorithmException {
+ MessageDigest md = MessageDigest.getInstance("MD5");
+ byte[] hashBytes = md.digest(password.getBytes());
+ return bytesToHex(hashBytes);
+ }
+ public static String hashPasswordSHA1(String password) throws NoSuchAlgorithmException {
+ MessageDigest md = MessageDigest.getInstance("SHA-1");
+ byte[] hashBytes = md.digest(password.getBytes());
+ return bytesToHex(hashBytes);
+ }
+ private static String bytesToHex(byte[] bytes) {
+ StringBuilder sb = new StringBuilder();
+ for (byte b : bytes) {
+ sb.append(String.format("%02x", b));
+ }
+ return sb.toString();
+ }
+ public static void main(String[] args) {
+ try {
+ String password = "mySecurePassword";
+
+ String md5Hash = hashPasswordMD5(password);
+ System.out.println("MD5 Hash: " + md5Hash);
+
+ String sha1Hash = hashPasswordSHA1(password);
+ System.out.println("SHA-1 Hash: " + sha1Hash);
+ } catch (NoSuchAlgorithmException e) {
+ System.err.println("Hashing algorithm not found.");
+ }
+ }
+}
+
+/* output:-
+MD5 Hash: 82797e195b3138feeec277c45e6133c3
+SHA-1 Hash: e825fb3285435371ddf0b0ea414d9a34a0300bd3
+*/
