@@ -1,0 +1,50 @@
+19) Demonstrate Intrusion Detection System using Snort Tool
+
+To demonstrate Snort, an open-source intrusion detection and prevention system (IDS/IPS), follow these steps to install, configure, and run Snort on your system:
+
+Steps to Set Up Snort:
+
+1. Install Snort on Linux (Ubuntu example):
+   - Open a terminal and run the following commands:
+     ```
+     sudo apt update
+     sudo apt install snort
+     ```
+
+2. Configure Snort:
+   - After installation, you need to configure Snort. You will be prompted to configure the network interface and other settings during installation.
+   - If you want to manually configure, edit the `snort.conf` file:
+     ```
+     sudo nano /etc/snort/snort.conf
+     ```
+   - Set the `HOME_NET` variable to the network range you want to monitor. For example:
+     ```
+     var HOME_NET [192.168.1.0/24]
+     ```
+
+3. Running Snort in IDS Mode:
+   - Snort can run in different modes: IDS (Intrusion Detection System) or IPS (Intrusion Prevention System).
+   - To run Snort in IDS mode, use the following command:
+     ```
+     sudo snort -A console -c /etc/snort/snort.conf -i eth0
+     ```
+   - Replace `eth0` with your network interface (use `ifconfig` to check).
+
+4. Snort Rules:
+   - Snort uses rules to detect malicious traffic. By default, Snort comes with a set of rules located in `/etc/snort/rules/`.
+   - You can update the rules regularly or add custom rules.
+   - Example of a simple rule to detect ICMP echo requests (ping):
+     ```
+     alert icmp any any -> $HOME_NET any (msg:"ICMP Echo Request"; sid:1000001;)
+     ```
+
+5. Monitor Traffic:
+   - After running Snort, monitor the traffic for any intrusion attempts.
+   - The Snort console will output alerts if any suspicious activity is detected.
+
+Example Output:
+```
+01/01-12:00:00.000000  [**] [1:1000001:1] ICMP Echo Request [**] [Priority: 3] {ICMP} 192.168.1.100 -> 192.168.1.200
+```
+This output indicates that Snort detected an ICMP Echo Request from IP `192.168.1.100` to `192.168.1.200`.
+

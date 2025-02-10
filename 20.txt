@@ -1,0 +1,44 @@
+20. Download the N-Stalker Vulnerability Assessment Tool and explore its features.
+
+N-Stalker is a powerful web application vulnerability scanner that helps identify security weaknesses in websites and web applications. It supports multiple scanning modes, including SQL injection, cross-site scripting (XSS), and other common web vulnerabilities.
+
+Steps to Download and Explore N-Stalker:
+
+1. Download N-Stalker:
+   - Visit the official N-Stalker website at N-Stalker or Download Page to download the tool.
+
+2. Install N-Stalker:
+   - Once the installer is downloaded, follow the instructions to install N-Stalker on your system.
+   - N-Stalker is available for both Windows and Linux, but the installation steps may vary based on your operating system.
+
+3. Launch N-Stalker:
+   - After installation, launch N-Stalker. You'll typically have a GUI to work with. Once opened, you'll see options for scanning websites, analyzing vulnerabilities, and generating reports.
+
+4. Basic Features of N-Stalker:
+   - **Web Vulnerability Scanning**: N-Stalker automatically scans websites and web applications for vulnerabilities like SQL injection, XSS, remote file inclusion, and more.
+   - **Comprehensive Reporting**: After scanning, N-Stalker provides detailed reports of vulnerabilities found with their risk levels.
+   - **Automated Vulnerability Detection**: You can automate the scanning process by scheduling scans at regular intervals to keep track of vulnerabilities over time.
+   - **Customizable Rules**: N-Stalker allows customization of scanning rules to fine-tune its detection for specific environments.
+   - **Real-time Monitoring**: It offers real-time monitoring of web applications to detect and block intrusions.
+
+5. Exploring the Features:
+   - **Run a Scan:**
+     - To run a basic vulnerability scan, enter the target URL of the website/application you wish to analyze.
+     - Start the scan, and N-Stalker will identify vulnerabilities and provide you with a detailed analysis of the web application's security status.
+   - **Reports:**
+     - After scanning, N-Stalker generates reports highlighting found vulnerabilities, including their type (e.g., SQL injection, XSS), and provides suggestions for remediation.
+   - **Advanced Features:**
+     - N-Stalker supports advanced features like detecting hidden forms, cookies vulnerabilities, SSL vulnerabilities, and more.
+
+6. Example of using N-Stalker to scan a target website:
+   ```bash
+   nstalker --scan https://example.com
+   ```
+
+7. Interpret Results:
+   - N-Stalker provides an in-depth analysis and reports for each detected vulnerability, categorizing them into risk levels like low, medium, and high.
+   - Recommendations for fixing these vulnerabilities will be included in the scan results.
+
+8. Conclusion:
+   - N-Stalker is an excellent tool for conducting web vulnerability assessments. It helps website administrators, security professionals, and penetration testers discover and fix security weaknesses in web applications.
+

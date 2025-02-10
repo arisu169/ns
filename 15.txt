@@ -1,0 +1,31 @@
+//15)Program to implement MD5 Algorithm.
+
+import java.security.MessageDigest;
+
+public class MD5Example {
+
+    public static String hashUsingMD5(String input) throws Exception {
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        byte[] hashBytes = md5.digest(input.getBytes());
+        return bytesToHex(hashBytes);
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String input = "Hello, World!";
+        String hashedOutput = hashUsingMD5(input);
+        System.out.println("MD5 Hash: " + hashedOutput);
+    }
+}
+
+
+/*Output:
+MD5 Hash: 65a8e27d8879283831b664bd8b7f0ad4
+*/

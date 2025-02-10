@@ -1,0 +1,109 @@
+//17) program to encrypt and decrypt a sample message using DES, RSA, AES
+//algorithms and measure the time taken for encryption and decryption by each algorithm.
+
+import javax.crypto.*;
+import java.security.*;
+import java.util.Base64;
+import java.time.Instant;
+import java.time.Duration;
+
+public class EncryptionDecryptionTime {
+
+    public static String encryptDES(String message, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("DES");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encrypted = cipher.doFinal(message.getBytes());
+        return Base64.getEncoder().encodeToString(encrypted);
+    }
+
+    public static String decryptDES(String encryptedMessage, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("DES");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decoded = Base64.getDecoder().decode(encryptedMessage);
+        byte[] decrypted = cipher.doFinal(decoded);
+        return new String(decrypted);
+    }
+
+    public static String encryptRSA(String message, PublicKey publicKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        byte[] encrypted = cipher.doFinal(message.getBytes());
+        return Base64.getEncoder().encodeToString(encrypted);
+    }
+
+    public static String decryptRSA(String encryptedMessage, PrivateKey privateKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] decoded = Base64.getDecoder().decode(encryptedMessage);
+        byte[] decrypted = cipher.doFinal(decoded);
+        return new String(decrypted);
+    }
+
+    public static String encryptAES(String message, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encrypted = cipher.doFinal(message.getBytes());
+        return Base64.getEncoder().encodeToString(encrypted);
+    }
+
+    public static String decryptAES(String encryptedMessage, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decoded = Base64.getDecoder().decode(encryptedMessage);
+        byte[] decrypted = cipher.doFinal(decoded);
+        return new String(decrypted);
+    }
+
+    public static void main(String[] args) throws Exception {
+        String message = "This is a test message for encryption and decryption.";
+        
+        KeyPairGenerator rsaKeyGen = KeyPairGenerator.getInstance("RSA");
+        rsaKeyGen.initialize(2048);
+        KeyPair rsaKeyPair = rsaKeyGen.generateKeyPair();
+        
+        KeyGenerator aesKeyGen = KeyGenerator.getInstance("AES");
+        aesKeyGen.init(128);
+        SecretKey aesKey = aesKeyGen.generateKey();
+        
+        KeyGenerator desKeyGen = KeyGenerator.getInstance("DES");
+        desKeyGen.init(56);
+        SecretKey desKey = desKeyGen.generateKey();
+        
+        Instant start = Instant.now();
+        String encryptedDES = encryptDES(message, desKey);
+        String decryptedDES = decryptDES(encryptedDES, desKey);
+        Instant end = Instant.now();
+        Duration desDuration = Duration.between(start, end);
+        
+        start = Instant.now();
+        String encryptedRSA = encryptRSA(message, rsaKeyPair.getPublic());
+        String decryptedRSA = decryptRSA(encryptedRSA, rsaKeyPair.getPrivate());
+        end = Instant.now();
+        Duration rsaDuration = Duration.between(start, end);
+        
+        start = Instant.now();
+        String encryptedAES = encryptAES(message, aesKey);
+        String decryptedAES = decryptAES(encryptedAES, aesKey);
+        end = Instant.now();
+        Duration aesDuration = Duration.between(start, end);
+        
+        System.out.println("DES - Encryption Time: " + desDuration.toMillis() + " ms, Decryption Time: " + desDuration.toMillis() + " ms");
+        System.out.println("RSA - Encryption Time: " + rsaDuration.toMillis() + " ms, Decryption Time: " + rsaDuration.toMillis() + " ms");
+        System.out.println("AES - Encryption Time: " + aesDuration.toMillis() + " ms, Decryption Time: " + aesDuration.toMillis() + " ms");
+        
+        System.out.println("Decrypted Message from DES: " + decryptedDES);
+        System.out.println("Decrypted Message from RSA: " + decryptedRSA);
+        System.out.println("Decrypted Message from AES: " + decryptedAES);
+    }
+}
+
+
+
+/*Output:
+DES - Encryption Time: 2 ms, Decryption Time: 2 ms
+RSA - Encryption Time: 16 ms, Decryption Time: 16 ms
+AES - Encryption Time: 2 ms, Decryption Time: 2 ms
+Decrypted Message from DES: This is a test message for encryption and decryption.
+Decrypted Message from RSA: This is a test message for encryption and decryption.
+Decrypted Message from AES: This is a test message for encryption and decryption.
+*/

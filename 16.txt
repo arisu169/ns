@@ -1,0 +1,44 @@
+//16) Program to implement the Signature Scheme Digital Signature Standard.
+
+import java.security.*;
+import java.util.Base64;
+
+public class DigitalSignatureStandard {
+
+    public static String generateSignature(String message, PrivateKey privateKey) throws Exception {
+        Signature signature = Signature.getInstance("SHA256withDSA");
+        signature.initSign(privateKey);
+        signature.update(message.getBytes());
+        byte[] signedData = signature.sign();
+        return Base64.getEncoder().encodeToString(signedData);
+    }
+
+    public static boolean verifySignature(String message, String signatureStr, PublicKey publicKey) throws Exception {
+        Signature signature = Signature.getInstance("SHA256withDSA");
+        signature.initVerify(publicKey);
+        signature.update(message.getBytes());
+        byte[] signatureBytes = Base64.getDecoder().decode(signatureStr);
+        return signature.verify(signatureBytes);
+    }
+
+    public static void main(String[] args) throws Exception {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("DSA");
+        keyPairGenerator.initialize(2048); // Initialize with 2048-bit key size
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+
+        String message = "This is a confidential message.";
+
+        // Generate the signature
+        String signature = generateSignature(message, keyPair.getPrivate());
+        System.out.println("Generated Digital Signature: " + signature);
+
+        // Verify the signature
+        boolean isVerified = verifySignature(message, signature, keyPair.getPublic());
+        System.out.println("Signature Verified: " + isVerified);
+    }
+}
+
+
+/*OUTPUT:
+Generated Digital Signature: MD0CHDuNBUba/x7vOkYPlN6N6pIAjhESeWNbXKQ4wMMCHQCr5QWF1zYnfWc3kHNUiRj7z1W4HAp4P6xN97mx
+*/

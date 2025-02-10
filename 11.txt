@@ -1,0 +1,40 @@
+//program to implement Digital signature using RSA Public Key Encryption Algorithm.
+
+
+import java.security.*;
+import java.util.Base64;
+
+public class DigitalSignatureExample {
+
+    public static String generateSignature(String message, PrivateKey privateKey) throws Exception {
+        Signature signature = Signature.getInstance("SHA256withRSA");
+        signature.initSign(privateKey);
+        signature.update(message.getBytes());
+        return Base64.getEncoder().encodeToString(signature.sign());
+    }
+
+    public static boolean verifySignature(String message, String signatureStr, PublicKey publicKey) throws Exception {
+        Signature signature = Signature.getInstance("SHA256withRSA");
+        signature.initVerify(publicKey);
+        signature.update(message.getBytes());
+        return signature.verify(Base64.getDecoder().decode(signatureStr));
+    }
+
+    public static void main(String[] args) throws Exception {
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+        keyPairGen.initialize(2048);
+        KeyPair keyPair = keyPairGen.generateKeyPair();
+        
+        String message = "This is a confidential message.";
+        String signature = generateSignature(message, keyPair.getPrivate());
+        
+        System.out.println("Digital Signature: " + signature);
+        System.out.println("Signature valid: " + verifySignature(message, signature, keyPair.getPublic()));
+    }
+}
+
+
+
+/*OUTPUT:
+Digital Signature: Nypl1Rr6RhC/NtjqHkFnnN2+NHOLz4chLQaBRFQ4JfNVVgQSTw+bSLDbbMXFq7S91joF5TPNPW1zPFpkAOTI5iOK4DpPGkTqhLS+OlLmpK/4g5un598+8TzhwqGt7OFGPmGjAIAK6GUnreG6PJt6+bG0ZhgfZiS439XP1WrmzRGV9fHaPZ9x9TFM2OXluXMOQTNBUO2G5CDiS2Cpu36oeapZDnIQfxj+D50/G4fF1d0oxglXG7AgmlPilZCiewEQtCSyY2p77oyK3e4iJyJtFQutxNUADBcv0mkn8NyODTZDwOwFDfgFkVPSuN93xOb3pCdpHd6omozJu528mzHG1A==
+Signature valid: true */

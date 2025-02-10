@@ -1,0 +1,58 @@
+//12) Program to implement Diffie-Hellman Key Exchange Algorithm.
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
+public class DiffieHellman {
+
+    public static BigInteger generatePrivateKey(BigInteger prime, SecureRandom random) {
+        return new BigInteger(prime.bitLength(), random).mod(prime.subtract(BigInteger.ONE)).add(BigInteger.ONE);
+    }
+
+    public static BigInteger calculatePublicKey(BigInteger base, BigInteger privateKey, BigInteger prime) {
+        return base.modPow(privateKey, prime);
+    }
+
+    public static BigInteger calculateSharedSecret(BigInteger publicKey, BigInteger privateKey, BigInteger prime) {
+        return publicKey.modPow(privateKey, prime);
+    }
+
+    public static void main(String[] args) {
+        BigInteger prime = new BigInteger("23");
+        BigInteger base = new BigInteger("5");
+
+        SecureRandom random = new SecureRandom();
+
+        BigInteger alicePrivateKey = generatePrivateKey(prime, random);
+        BigInteger bobPrivateKey = generatePrivateKey(prime, random);
+
+        BigInteger alicePublicKey = calculatePublicKey(base, alicePrivateKey, prime);
+        BigInteger bobPublicKey = calculatePublicKey(base, bobPrivateKey, prime);
+
+        BigInteger aliceSharedSecret = calculateSharedSecret(bobPublicKey, alicePrivateKey, prime);
+        BigInteger bobSharedSecret = calculateSharedSecret(alicePublicKey, bobPrivateKey, prime);
+
+        System.out.println("Alice's Private Key: " + alicePrivateKey);
+        System.out.println("Bob's Private Key: " + bobPrivateKey);
+        System.out.println("Alice's Public Key: " + alicePublicKey);
+        System.out.println("Bob's Public Key: " + bobPublicKey);
+        System.out.println("Shared Secret (Alice): " + aliceSharedSecret);
+        System.out.println("Shared Secret (Bob): " + bobSharedSecret);
+
+        if (aliceSharedSecret.equals(bobSharedSecret)) {
+            System.out.println("The shared secrets are equal! Key exchange successful.");
+        } else {
+            System.out.println("The shared secrets do not match.");
+        }
+    }
+}
+
+
+/*OUTPUT:
+Alice's Private Key: 4
+Bob's Private Key: 11
+Alice's Public Key: 4
+Bob's Public Key: 22
+Shared Secret (Alice): 1
+Shared Secret (Bob): 1
+The shared secrets are equal! Key exchange successful.*/

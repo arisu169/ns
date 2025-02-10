@@ -1,0 +1,52 @@
+//18)program to implement your own pseudo-random number generator and stream cipher.
+
+import java.util.Random;
+
+public class PRNGandStreamCipher {
+
+    private static int seed = 12345;
+
+    public static int customPRNG() {
+        Random random = new Random(seed);
+        seed = random.nextInt();
+        return seed;
+    }
+
+    public static String streamCipherEncrypt(String message) {
+        StringBuilder encryptedMessage = new StringBuilder();
+        for (int i = 0; i < message.length(); i++) {
+            char c = message.charAt(i);
+            c ^= customPRNG();
+            encryptedMessage.append(c);
+        }
+        return encryptedMessage.toString();
+    }
+
+    public static String streamCipherDecrypt(String encryptedMessage) {
+        StringBuilder decryptedMessage = new StringBuilder();
+        for (int i = 0; i < encryptedMessage.length(); i++) {
+            char c = encryptedMessage.charAt(i);
+            c ^= customPRNG();
+            decryptedMessage.append(c);
+        }
+        return decryptedMessage.toString();
+    }
+
+    public static void main(String[] args) {
+        String message = "This is a secret message.";
+
+        System.out.println("Original Message: " + message);
+        
+        String encryptedMessage = streamCipherEncrypt(message);
+        System.out.println("Encrypted Message: " + encryptedMessage);
+
+        String decryptedMessage = streamCipherDecrypt(encryptedMessage);
+        System.out.println("Decrypted Message: " + decryptedMessage);
+    }
+}
+
+
+
+
+
+/*Output:
