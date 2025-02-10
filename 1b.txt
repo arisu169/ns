@@ -34,7 +34,7 @@ public class ProductCipher {
  }
 }
 
-// output:-
+/* output:-
 Enter text: hello world
 Encrypted: khoor zruog
-Decrypted: hello world
+Decrypted: hello world */
