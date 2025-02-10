@@ -1,0 +1,30 @@
+// program to generate random numbers using pseudo random number generation Algorithm
+import java.util.Random;
+import java.util.Scanner;
+public class PseudoRandomNumberGenerator {
+ private long seed;
+ private static final long MULTIPLIER = 1664525;
+ private static final long INCREMENT = 1013904223;
+ private static final long MODULUS = (long) Math.pow(2, 32);
+ public PseudoRandomNumberGenerator(long seed) {
+ this.seed = seed;
+ }
+ public int nextInt() {
+ seed = (MULTIPLIER * seed + INCREMENT) % MODULUS;
+ return (int) (seed % 100); // Generating numbers between 0-99
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter seed value: ");
+ long seed = scanner.nextLong();
+ PseudoRandomNumberGenerator prng = new PseudoRandomNumberGenerator(seed);
+ System.out.println("Generated Random Numbers:");
+ for (int i = 0; i < 10; i++) {
+ System.out.print(prng.nextInt() + " ");
+ }
+ }
+}
+/* output:-
+Enter seed value: 5
+Generated Random Numbers:
+48 87 98 89 64 43 22 73 60 39 */
