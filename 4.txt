@@ -1,4 +1,4 @@
- program to implement Poly-Alphabetic Cipher
+// program to implement Poly-Alphabetic Cipher
 
  import java.util.Scanner;
 public class PolyAlphabeticCipher {
