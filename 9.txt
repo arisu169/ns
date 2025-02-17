@@ -20,5 +20,5 @@ public class TripleDES_Decrypt {
 }
 
 /* output:-
-Decrypted text: Hello
+
 */
