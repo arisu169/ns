@@ -20,5 +20,5 @@ public class SingleDES_Decrypt {
 }
 
 /* output:-
-Decrypted text: Hello
+
 */
