@@ -1,4 +1,4 @@
-// program to implement single DES-Encrypt method
+//6) program to implement single DES-Encrypt method
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
