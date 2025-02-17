@@ -1,4 +1,4 @@
- // program to implement single DES-Decrypt method
+ //7) program to implement single DES-Decrypt method
 
  import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,5 +20,5 @@ public class SingleDES_Decrypt {
 }
 
 /* output:-
-
+Decrypted text: Hello
 */
