@@ -1,24 +1,31 @@
  //7) program to implement single DES-Decrypt method
 
- import javax.crypto.Cipher;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
-public class SingleDES_Decrypt {
- public static String decrypt(String ciphertext, String key) throws Exception {
- SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "DES");
- Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
- cipher.init(Cipher.DECRYPT_MODE, secretKey);
- byte[] decryptedText = cipher.doFinal(Base64.getDecoder().decode(ciphertext));
- return new String(decryptedText);
- }
- public static void main(String[] args) throws Exception {
- String ciphertext = "uFqqhZb4eGg=";
- String key = "12345678";
- String decryptedText = decrypt(ciphertext, key);
- System.out.println("Decrypted text: " + decryptedText);
- }
+
+public class DESExample {
+    public static void main(String[] args) throws Exception {
+        String originalText = "Hello World"; // The message to encrypt
+        String key = "12345678"; // DES key must be exactly 8 bytes
+
+        // Encrypt
+        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "DES");
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] encryptedBytes = cipher.doFinal(originalText.getBytes());
+        String encryptedBase64 = Base64.getEncoder().encodeToString(encryptedBytes);
+        System.out.println("Encrypted Text: " + encryptedBase64);
+
+        // Decrypt
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedBase64));
+        String decryptedText = new String(decryptedBytes);
+        System.out.println("Decrypted Text: " + decryptedText);
+    }
 }
 
 /* output:-
-
+Encrypted Text: 01Jk6AecyqldguNoHIO7dw==
+Decrypted Text: Hello World
 */
