@@ -1,0 +1,666 @@
+//1a.Caesar Cipher Algorithm
+
+import java.util.Scanner;
+public class CaesarCipher {
+ public static String encrypt(String text, int shift) {
+ StringBuilder result = new StringBuilder();
+ for (char ch : text.toCharArray()) {
+ if (Character.isLetter(ch)) {
+ char base = Character.isUpperCase(ch) ? 'A' : 'a';
+ result.append((char) ((ch - base + shift) % 26 + base));
+ } else {
+ result.append(ch);
+ }
+ }
+ return result.toString();
+ }
+
+ public static String decrypt(String text, int shift) {
+ return encrypt(text, 26 - shift);
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.println("Enter text to encrypt:");
+ String text = scanner.nextLine();
+ int shift = 3; // Fixed shift
+ String encrypted = encrypt(text, shift);
+ System.out.println("Encrypted: " + encrypted);
+ System.out.println("Decrypted: " + decrypt(encrypted, shift));
+ }
+}
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+// 1b.Product Cipher
+
+import java.util.Scanner;
+public class ProductCipher {
+ public static String caesarEncrypt(String text, int shift) {
+ StringBuilder result = new StringBuilder();
+ for (char ch : text.toCharArray()) {
+ if (Character.isLetter(ch)) {
+ char base = Character.isUpperCase(ch) ? 'A' : 'a';
+ result.append((char) ((ch - base + shift) % 26 + base));
+ } else {
+ result.append(ch);
+ }
+ }
+ return result.toString();
+ }
+ public static String caesarDecrypt(String text, int shift) {
+ return caesarEncrypt(text, 26 - shift);
+ }
+ public static String encrypt(String text, int shift) {
+ return caesarEncrypt(text, shift);
+ }
+ public static String decrypt(String text, int shift) {
+ return caesarDecrypt(text, shift);
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter text: ");
+ String text = scanner.nextLine();
+ int shift = 3;
+ String encrypted = encrypt(text, shift);
+ System.out.println("Encrypted: " + encrypted);
+ System.out.println("Decrypted: " + decrypt(encrypted, shift));
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+//2.  program to generate cipher text and recover the plaintext using Hill cipher
+import java.util.Scanner;
+public class HillCipher {
+ private static final int[][] keyMatrix = {{2, 4, 5}, {9, 2, 1}, {3, 17, 7}};
+ private static final int[][] inverseKeyMatrix = {{15, 17, 20}, {20, 9, 8}, {9, 3, 2}};
+ private static final int MOD = 26;
+ public static String encrypt(String text) {
+ text = text.toUpperCase().replaceAll("[^A-Z]", "");
+ while (text.length() % 3 != 0) text += "X";
+
+ StringBuilder result = new StringBuilder();
+ for (int i = 0; i < text.length(); i += 3) {
+ int[] vector = {text.charAt(i) - 'A', text.charAt(i + 1) - 'A', text.charAt(i + 2) - 'A'};
+ for (int row = 0; row < 3; row++) {
+ int sum = 0;
+ for (int col = 0; col < 3; col++) {
+ sum += keyMatrix[row][col] * vector[col];
+ }
+ result.append((char) ((sum % MOD) + 'A'));
+ }
+ }
+ return result.toString();
+ }
+ public static String decrypt(String text) {
+ StringBuilder result = new StringBuilder();
+ for (int i = 0; i < text.length(); i += 3) {
+ int[] vector = {text.charAt(i) - 'A', text.charAt(i + 1) - 'A', text.charAt(i + 2) - 'A'};
+ for (int row = 0; row < 3; row++) {
+ int sum = 0;
+ for (int col = 0; col < 3; col++) {
+ sum += inverseKeyMatrix[row][col] * vector[col];
+ }
+ result.append((char) ((sum % MOD + MOD) % MOD + 'A'));
+ }
+ }
+ return result.toString();
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter text: ");
+ String text = scanner.nextLine();
+ String encrypted = encrypt(text);
+ System.out.println("Encrypted: " + encrypted);
+ System.out.println("Decrypted: " + decrypt(encrypted));
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+//3.  program to generate random numbers using pseudo random number generation Algorithm
+import java.util.Random;
+import java.util.Scanner;
+public class PseudoRandomNumberGenerator {
+ private long seed;
+ private static final long MULTIPLIER = 1664525;
+ private static final long INCREMENT = 1013904223;
+ private static final long MODULUS = (long) Math.pow(2, 32);
+ public PseudoRandomNumberGenerator(long seed) {
+ this.seed = seed;
+ }
+ public int nextInt() {
+ seed = (MULTIPLIER * seed + INCREMENT) % MODULUS;
+ return (int) (seed % 100); // Generating numbers between 0-99
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter seed value: ");
+ long seed = scanner.nextLong();
+ PseudoRandomNumberGenerator prng = new PseudoRandomNumberGenerator(seed);
+ System.out.println("Generated Random Numbers:");
+ for (int i = 0; i < 10; i++) {
+ System.out.print(prng.nextInt() + " ");
+ }
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+//4. program to implement Poly-Alphabetic Cipher
+
+ import java.util.Scanner;
+public class PolyAlphabeticCipher {
+ public static String encrypt(String plaintext, String key) {
+ StringBuilder ciphertext = new StringBuilder();
+ int keyIndex = 0;
+ for (int i = 0; i < plaintext.length(); i++) {
+ char ptChar = plaintext.charAt(i);
+ if (Character.isLetter(ptChar)) {
+ char keyChar = key.charAt(keyIndex % key.length());
+ if (Character.isLowerCase(ptChar)) {
+ ptChar = (char) (((ptChar - 'a' + (keyChar - 'a')) % 26) + 'a');
+ } else if (Character.isUpperCase(ptChar)) {
+ ptChar = (char) (((ptChar - 'A' + (keyChar - 'A')) % 26) + 'A');
+ }
+ ciphertext.append(ptChar);
+ keyIndex++;
+ } else {
+ ciphertext.append(ptChar);
+ }
+ }
+ return ciphertext.toString();
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter plaintext: ");
+ String plaintext = scanner.nextLine();
+ System.out.print("Enter key: ");
+ String key = scanner.nextLine();
+ String ciphertext = encrypt(plaintext, key);
+ System.out.println("Encrypted ciphertext: " + ciphertext);
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+//5 program to implement Transposition Cipher and Rail Fence Technique
+
+// 1. Transposition Cipher (Program 1)
+import java.util.Scanner;
+public class TranspositionCipher {
+ public static String encrypt(String plaintext, int key) {
+ int length = plaintext.length();
+ int rows = key;
+ int cols = (int) Math.ceil((double) length / key);
+ char[][] grid = new char[rows][cols];
+ int index = 0;
+ for (int i = 0; i < rows; i++) {
+ for (int j = 0; j < cols; j++) {
+ if (index < length) {
+ grid[i][j] = plaintext.charAt(index++);
+ } else {
+ grid[i][j] = 'X'; // Fill with 'X' for empty spaces
+ }
+ }
+ }
+ StringBuilder ciphertext = new StringBuilder();
+ for (int j = 0; j < cols; j++) {
+ for (int i = 0; i < rows; i++) {
+ if (grid[i][j] != 'X') {
+ ciphertext.append(grid[i][j]);
+ }
+ }
+ }
+ return ciphertext.toString();
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter plaintext: ");
+ String plaintext = scanner.nextLine();
+ System.out.print("Enter key (number of rows): ");
+ int key = scanner.nextInt();
+ String ciphertext = encrypt(plaintext, key);
+ System.out.println("Encrypted (Transposition Cipher): " + ciphertext);
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+// 5b. Rail Fence Cipher (Program 2)
+import java.util.Scanner;
+public class RailFenceCipher {
+ public static String encrypt(String plaintext, int rails) {
+ char[][] railFence = new char[rails][plaintext.length()];
+ boolean directionDown = false;
+ int row = 0, col = 0;
+ for (int i = 0; i < plaintext.length(); i++) {
+ railFence[row][col++] = plaintext.charAt(i);
+ if (row == 0 || row == rails - 1) {
+ directionDown = !directionDown;
+ }
+ row = directionDown ? row + 1 : row - 1;
+ }
+ StringBuilder ciphertext = new StringBuilder();
+ for (int i = 0; i < rails; i++) {
+ for (int j = 0; j < plaintext.length(); j++) {
+ if (railFence[i][j] != 0) {
+ ciphertext.append(railFence[i][j]);
+ }
+ }
+ }
+ return ciphertext.toString();
+ }
+ public static void main(String[] args) {
+ Scanner scanner = new Scanner(System.in);
+ System.out.print("Enter plaintext: ");
+ String plaintext = scanner.nextLine();
+ System.out.print("Enter number of rails: ");
+ int rails = scanner.nextInt();
+ String ciphertext = encrypt(plaintext, rails);
+ System.out.println("Encrypted (Rail Fence Cipher): " + ciphertext);
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+//6) program to implement single DES-Encrypt method
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+public class SingleDES_Encrypt {
+ public static String encrypt(String plaintext, String key) throws Exception {
+ SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "DES");
+ Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+ cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+ byte[] encryptedText = cipher.doFinal(plaintext.getBytes());
+ return Base64.getEncoder().encodeToString(encryptedText);
+ }
+ public static void main(String[] args) throws Exception {
+ String plaintext = "Hello World";
+ String key = "12345678";
+ String ciphertext = encrypt(plaintext, key);
+ System.out.println("Encrypted text: " + ciphertext);
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+//7) program to implement single DES-Decrypt method
+
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+
+public class DESExample {
+    public static void main(String[] args) throws Exception {
+        String originalText = "Hello World"; // The message to encrypt
+        String key = "12345678"; // DES key must be exactly 8 bytes
+
+        // Encrypt
+        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "DES");
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] encryptedBytes = cipher.doFinal(originalText.getBytes());
+        String encryptedBase64 = Base64.getEncoder().encodeToString(encryptedBytes);
+        System.out.println("Encrypted Text: " + encryptedBase64);
+
+        // Decrypt
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedBase64));
+        String decryptedText = new String(decryptedBytes);
+        System.out.println("Decrypted Text: " + decryptedText);
+    }
+}
+
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+
+//8) program to implement triple DES-Encrypt method
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+public class TripleDES_Encrypt {
+ public static String encrypt(String plaintext, String key) throws Exception {
+ SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "DESede");
+ Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+ cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+ byte[] encryptedText = cipher.doFinal(plaintext.getBytes());
+ return Base64.getEncoder().encodeToString(encryptedText);
+ }
+ public static void main(String[] args) throws Exception {
+ String plaintext = "Hello World";
+ String key = "123456789012345678901234";
+ String ciphertext = encrypt(plaintext, key);
+ System.out.println("Encrypted text: " + ciphertext);
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+
+//9) program to implement triple DES-Decrypt method
+
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+
+public class Simple3DesDecrypt {
+    public static void main(String[] args) throws Exception {
+        String originalText = "Hello World"; // Message to encrypt
+        String key = "123456789012345678901234"; // 24-byte key required for 3DES
+
+        // Encrypt
+        Cipher encryptCipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "DESede");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, secretKey);
+
+        byte[] encryptedBytes = encryptCipher.doFinal(originalText.getBytes());
+        String encryptedBase64 = Base64.getEncoder().encodeToString(encryptedBytes);
+        System.out.println("Encrypted: " + encryptedBase64);
+
+        // Decrypt
+        Cipher decryptCipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+        decryptCipher.init(Cipher.DECRYPT_MODE, secretKey);
+
+        byte[] decryptedBytes = decryptCipher.doFinal(Base64.getDecoder().decode(encryptedBase64));
+        String decryptedText = new String(decryptedBytes);
+        System.out.println("Decrypted: " + decryptedText);
+    }
+}
+
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+
+
+//10.  program to implement hash functions (MD5 and SHA-l) for Password Hashing
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+public class PasswordHashing {
+ public static String hashPasswordMD5(String password) throws NoSuchAlgorithmException {
+ MessageDigest md = MessageDigest.getInstance("MD5");
+ byte[] hashBytes = md.digest(password.getBytes());
+ return bytesToHex(hashBytes);
+ }
+ public static String hashPasswordSHA1(String password) throws NoSuchAlgorithmException {
+ MessageDigest md = MessageDigest.getInstance("SHA-1");
+ byte[] hashBytes = md.digest(password.getBytes());
+ return bytesToHex(hashBytes);
+ }
+ private static String bytesToHex(byte[] bytes) {
+ StringBuilder sb = new StringBuilder();
+ for (byte b : bytes) {
+ sb.append(String.format("%02x", b));
+ }
+ return sb.toString();
+ }
+ public static void main(String[] args) {
+ try {
+ String password = "mySecurePassword";
+
+ String md5Hash = hashPasswordMD5(password);
+ System.out.println("MD5 Hash: " + md5Hash);
+
+ String sha1Hash = hashPasswordSHA1(password);
+ System.out.println("SHA-1 Hash: " + sha1Hash);
+ } catch (NoSuchAlgorithmException e) {
+ System.err.println("Hashing algorithm not found.");
+ }
+ }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+//11)program to implement Digital signature using RSA Public Key Encryption Algorithm.
+
+
+import java.security.*;
+import java.util.Base64;
+
+public class DigitalSignatureExample {
+
+    public static String generateSignature(String message, PrivateKey privateKey) throws Exception {
+        Signature signature = Signature.getInstance("SHA256withRSA");
+        signature.initSign(privateKey);
+        signature.update(message.getBytes());
+        return Base64.getEncoder().encodeToString(signature.sign());
+    }
+
+    public static boolean verifySignature(String message, String signatureStr, PublicKey publicKey) throws Exception {
+        Signature signature = Signature.getInstance("SHA256withRSA");
+        signature.initVerify(publicKey);
+        signature.update(message.getBytes());
+        return signature.verify(Base64.getDecoder().decode(signatureStr));
+    }
+
+    public static void main(String[] args) throws Exception {
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+        keyPairGen.initialize(2048);
+        KeyPair keyPair = keyPairGen.generateKeyPair();
+        
+        String message = "This is a confidential message.";
+        String signature = generateSignature(message, keyPair.getPrivate());
+        
+        System.out.println("Digital Signature: " + signature);
+        System.out.println("Signature valid: " + verifySignature(message, signature, keyPair.getPublic()));
+    }
+}
+
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+//12) Program to implement Diffie-Hellman Key Exchange Algorithm.
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
+public class DiffieHellman {
+
+    public static BigInteger generatePrivateKey(BigInteger prime, SecureRandom random) {
+        return new BigInteger(prime.bitLength(), random).mod(prime.subtract(BigInteger.ONE)).add(BigInteger.ONE);
+    }
+
+    public static BigInteger calculatePublicKey(BigInteger base, BigInteger privateKey, BigInteger prime) {
+        return base.modPow(privateKey, prime);
+    }
+
+    public static BigInteger calculateSharedSecret(BigInteger publicKey, BigInteger privateKey, BigInteger prime) {
+        return publicKey.modPow(privateKey, prime);
+    }
+
+    public static void main(String[] args) {
+        BigInteger prime = new BigInteger("23");
+        BigInteger base = new BigInteger("5");
+
+        SecureRandom random = new SecureRandom();
+
+        BigInteger alicePrivateKey = generatePrivateKey(prime, random);
+        BigInteger bobPrivateKey = generatePrivateKey(prime, random);
+
+        BigInteger alicePublicKey = calculatePublicKey(base, alicePrivateKey, prime);
+        BigInteger bobPublicKey = calculatePublicKey(base, bobPrivateKey, prime);
+
+        BigInteger aliceSharedSecret = calculateSharedSecret(bobPublicKey, alicePrivateKey, prime);
+        BigInteger bobSharedSecret = calculateSharedSecret(alicePublicKey, bobPrivateKey, prime);
+
+        System.out.println("Alice's Private Key: " + alicePrivateKey);
+        System.out.println("Bob's Private Key: " + bobPrivateKey);
+        System.out.println("Alice's Public Key: " + alicePublicKey);
+        System.out.println("Bob's Public Key: " + bobPublicKey);
+        System.out.println("Shared Secret (Alice): " + aliceSharedSecret);
+        System.out.println("Shared Secret (Bob): " + bobSharedSecret);
+
+        if (aliceSharedSecret.equals(bobSharedSecret)) {
+            System.out.println("The shared secrets are equal! Key exchange successful.");
+        } else {
+            System.out.println("The shared secrets do not match.");
+        }
+    }
+}
+
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+
+
+//13 Program to implement SHA-I Algorithm.
+
+import java.security.MessageDigest;
+
+public class SHA1Example {
+
+    public static String hashUsingSHA1(String input) throws Exception {
+        MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
+        byte[] hashBytes = sha1.digest(input.getBytes());
+        return bytesToHex(hashBytes);
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String input = "Hello, World!";
+        String hashedOutput = hashUsingSHA1(input);
+        System.out.println("SHA-1 Hash: " + hashedOutput);
+    }
+}
+
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+
+
+
+//14 Generation of Public Key and Private Key.
+
+import java.security.*;
+
+public class KeyPairGeneration {
+
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        keyPairGenerator.initialize(2048);
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+
+        System.out.println("Public Key: " + publicKey);
+        System.out.println("Private Key: " + privateKey);
+    }
+}
+
+
+========================================
+||          NEXT PROGRAM STARTS        ||
+========================================
+
+
+//15)Program to implement MD5 Algorithm.
+
+import java.security.MessageDigest;
+
+public class MD5Example {
+
+    public static String hashUsingMD5(String input) throws Exception {
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        byte[] hashBytes = md5.digest(input.getBytes());
+        return bytesToHex(hashBytes);
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String input = "Hello, World!";
+        String hashedOutput = hashUsingMD5(input);
+        System.out.println("MD5 Hash: " + hashedOutput);
+    }
+}
+
+
+
